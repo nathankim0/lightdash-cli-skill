@@ -4,6 +4,8 @@ A portable, open-source agent skill for inspecting governed metrics and creating
 
 It covers a practical workflow: discover existing definitions, validate the query, make a scoped change, and check what was actually saved. The invocation remains `$lightdash-cli` for compatibility.
 
+Independent discovery and verification run in parallel where supported. The skill reuses task evidence and stops expanding the investigation once the requested change is grounded; dependent validation and publishing steps remain ordered.
+
 ## Install
 
 With the [Skills CLI](https://github.com/vercel-labs/skills) (requires Node.js 22.20+):

@@ -15,6 +15,12 @@ Complete the requested Lightdash task using the working connection and the small
 - Check the relevant CLI command's installed `--help` or the MCP tool schema once. Treat [field-notes.md](references/field-notes.md) as versioned observations, not permanent product guarantees.
 - Keep downloads, query results, and drafts in a task scratch directory outside unrelated source repositories. Do not commit private content to this public skill repository.
 
+## Keep execution short
+
+- Batch independent reads: fetch content and relevant source metadata together; combine freshness, grain, null, and count checks into a bounded aggregate query where practical. Inspect every result before using it.
+- Reuse this task's snapshots, verified schemas, and working connection. Search/filter locally before fetching more. Stop discovery once the requested gap, definition, scope, and source are established; do not add an unrelated audit or repeat a passed check without new evidence.
+- Run independent lint/query checks concurrently. Keep dependent stages ordered: resolve the schema before composing a query, validate before writing, then read back. After a successful write, fetch the saved object and render/export in parallel where supported. Bound concurrency to the service's limits and keep writes to the same object sequential.
+
 ## Inspect before choosing or editing
 
 For CLI content authoring, read [content-workflow.md](references/content-workflow.md) for commands and chart formats.
