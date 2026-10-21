@@ -17,9 +17,12 @@ Complete the requested Lightdash task using the working connection and the small
 
 ## Keep execution short
 
+- For another chart in the same active project, start from the latest related saved chart and this task's verified source definition. Refresh only the destination/slug collision check; do not repeat catalog discovery, connection setup, or unchanged join/grain audits. Change the formula, scope, labels, and visualization only as needed. Reopen source discovery when evidence is stale or the requested definition needs different fields, joins, or permissions.
+- For that follow-up path, use one bounded source query for the new formula's population, freshness, and invariants; check it against the final chart query. Run lint alongside query execution, then upload and read back. Review the saved object's key fields without inventing a new verification framework. A new scope or a failed check justifies deeper investigation; a passed check does not.
 - Batch independent reads: fetch content and relevant source metadata together; combine freshness, grain, null, and count checks into a bounded aggregate query where practical. Inspect every result before using it.
 - Reuse this task's snapshots, verified schemas, and working connection. Search/filter locally before fetching more. Stop discovery once the requested gap, definition, scope, and source are established; do not add an unrelated audit or repeat a passed check without new evidence.
 - Run independent lint/query checks concurrently. Keep dependent stages ordered: resolve the schema before composing a query, validate before writing, then read back. After a successful write, fetch the saved object and render/export in parallel where supported. Bound concurrency to the service's limits and keep writes to the same object sequential.
+- When timing is requested, measure end-to-end wall time, including agent reasoning and tool orchestration. Record discovery/authoring separately from query and publishing time so repeated preparation is visible. Do not promise a duration before measuring this path, or remove correctness checks to meet an arbitrary deadline.
 
 ## Inspect before choosing or editing
 
