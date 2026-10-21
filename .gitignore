@@ -2,6 +2,11 @@
 .env
 .env.*
 .lightdash-metadata.json
+.config/lightdash/
+*.pem
+*.key
 *.csv
 node_modules/
 workspace/
+scratch/
+results/

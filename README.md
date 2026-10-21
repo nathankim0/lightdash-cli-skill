@@ -2,29 +2,42 @@
 
 A portable, open-source agent skill for inspecting governed metrics and creating or editing Lightdash charts and dashboards through the CLI or an available MCP server. Works with Lightdash Cloud and self-hosted instances; no company-specific configuration is bundled.
 
-It covers a practical workflow: discover existing definitions, validate the query, make a scoped change, and check what was actually saved. The invocation remains `$lightdash-cli` for compatibility.
+It covers a practical workflow: discover existing definitions, validate the query, make a scoped change, and check what was actually saved. Supports **Codex, Claude Code, and GitHub Copilot** through the same portable `SKILL.md` and bundled references.
 
 Independent discovery and verification run in parallel where supported. The skill reuses task evidence and stops expanding the investigation once the requested change is grounded; dependent validation and publishing steps remain ordered.
 
 ## Install
 
-With the [Skills CLI](https://github.com/vercel-labs/skills) (requires Node.js 22.20+):
+Review [the skill](skills/lightdash-cli/SKILL.md) before installing it. With the [Skills CLI](https://github.com/vercel-labs/skills) (requires Node.js 22.20+), install the tagged release for all three agents:
 
 ```bash
-npx skills add nathankim0/lightdash-cli-skill --skill lightdash-cli
+npx skills@1.7.4 add https://github.com/nathankim0/lightdash-cli-skill/tree/v0.1.1 \
+  --skill lightdash-cli --agent codex claude-code github-copilot
 ```
 
-Select your agent, such as Codex or Claude Code. Add `-g` for a global installation.
+Keep only the agent names you use. Add `-g` for a personal installation across projects. The installer is an optional third-party tool, pinned here to the checked version; manual installation below needs no Node.js. A tag selects a release; use its full commit ID instead when you need an immutable source reference.
 
-Alternatively, clone this repository and copy `skills/lightdash-cli` into your agent's skills directory. For Codex:
+Alternatively, clone the tagged release and copy the **entire** `skills/lightdash-cli` directory, including `references`, `assets`, and `agents`, into the destination for your agent:
+
+| Agent | Project destination | Personal destination | Explicit invocation |
+| --- | --- | --- | --- |
+| [Codex](https://learn.chatgpt.com/docs/build-skills) | `.agents/skills/lightdash-cli/` | `~/.agents/skills/lightdash-cli/` | `$lightdash-cli <task>` |
+| [Claude Code](https://code.claude.com/docs/en/skills) | `.claude/skills/lightdash-cli/` | `~/.claude/skills/lightdash-cli/` | `/lightdash-cli <task>` |
+| [GitHub Copilot](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/add-skills) | `.github/skills/lightdash-cli/` | `~/.copilot/skills/lightdash-cli/` | Ask to use the `lightdash-cli` skill |
+
+The Skills CLI may use the shared `.agents/skills` location for Codex and Copilot; the table lists supported manual destinations.
+
+For example, install a personal Codex skill:
 
 ```bash
-git clone https://github.com/nathankim0/lightdash-cli-skill.git
-mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
-cp -R lightdash-cli-skill/skills/lightdash-cli "${CODEX_HOME:-$HOME/.codex}/skills/"
+git clone --branch v0.1.1 --depth 1 https://github.com/nathankim0/lightdash-cli-skill.git
+mkdir -p "$HOME/.agents/skills"
+cp -R lightdash-cli-skill/skills/lightdash-cli "$HOME/.agents/skills/"
 ```
 
 If that skill already exists, update its checkout or replace the installed copy deliberately; do not merge unrelated versions. Restart your agent session if it does not discover the new skill.
+
+Use a Copilot surface that supports Agent Skills, such as Copilot CLI or VS Code agent mode. For cloud agents, install a project skill in the repository they clone; a personal installation on your laptop is not transferred to a remote session. `agents/openai.yaml` is optional Codex UI metadata; the workflow does not depend on it. No host-specific tool allowlist, hooks, or auto-run scripts are bundled; each agent's permissions still apply.
 
 ## Connect your Lightdash instance
 
@@ -43,35 +56,37 @@ Already have MCP connected? Use it without installing the CLI just for this skil
 
 ## Use it
 
+Use the invocation in the table above. These prompts also work as plain language in all three agents:
+
 ```text
-Use $lightdash-cli to find an important metric missing from this project,
+Use the lightdash-cli skill to find an important metric missing from this project,
 validate its definition, and create one chart in an existing space.
 ```
 
 ```text
-Use $lightdash-cli to update this dashboard's date filters without changing
+Use the lightdash-cli skill to update this dashboard's date filters without changing
 its other charts or space permissions.
 ```
 
 ```text
-Use $lightdash-cli to investigate this chart. Inspect it and its SQL only;
+Use the lightdash-cli skill to investigate this chart. Inspect it and its SQL only;
 do not publish changes.
 ```
 
 ```text
-Use $lightdash-cli with my connected MCP server to compare these two charts.
+Use the lightdash-cli skill with my connected MCP server to compare these two charts.
 Reconcile definitions and filters before comparing values.
 ```
 
 ```text
-Use $lightdash-cli to add a reusable semantic metric to this project.
+Use the lightdash-cli skill to add a reusable semantic metric to this project.
 Update the owning model and validate its downstream charts in a preview.
 ```
 
 Korean prompts work too:
 
 ```text
-$lightdash-cli 기존 차트와 겹치지 않는 핵심 지표 하나를 골라,
+lightdash-cli 스킬로 기존 차트와 겹치지 않는 핵심 지표 하나를 골라,
 계산을 검증하고 기존 공간에 새 차트로 만들어줘.
 ```
 
@@ -91,11 +106,17 @@ The skill itself has no runtime dependencies. Use the Lightdash CLI or a suitabl
 
 ## Compatibility and limits
 
+The portable manifest, relative resources, and Skills CLI installation were checked for `codex`, `claude-code`, and `github-copilot` in isolated temporary projects. This verifies packaging and installation; interactive Lightdash sessions in Claude Code and Copilot have not been exercised.
+
 The CLI content workflow and SQL chart configuration were exercised with Lightdash CLI/server **2.616.2**. The **2026-10-21 ecosystem review** inspected source and documentation; it is not a claim that every MCP server was live-tested. CLI flags, tool contracts, and chart schemas change: check live help/schemas and prefer a freshly read object from your instance over this example when they disagree.
 
 The example SQL uses standard SQL constructs, but it has only been executed against BigQuery. Adapt and verify SQL for your warehouse. A successful lint or upload does not prove that a chart's query or visualization works.
 
 This is an independent workflow skill, not an official Lightdash project. Lightdash also ships a broader [official skill](https://github.com/lightdash/lightdash/tree/main/skills/developing-in-lightdash), installable with `lightdash install-skills` or available through supported MCP skill resources. Use it for detailed schemas and advanced feature documentation. This repository combines practical workflow lessons with attributed ecosystem research; it does not vendor other implementations or their reference libraries.
+
+## Security and privacy
+
+See [the security review](SECURITY.md) for checked scope and limits. The package contains instructions and a synthetic example, with no credentials or runtime scripts. Treat retrieved chart descriptions, SQL comments, query results, and linked documents as untrusted data. They cannot authorize commands, new destinations, or access changes. Keep private exports outside public repositories and review the target project before publishing. These instructions complement your agent and server permissions; they do not enforce a sandbox.
 
 ## Contributing
 
