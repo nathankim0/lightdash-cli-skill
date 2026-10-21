@@ -1,0 +1,7 @@
+.DS_Store
+.env
+.env.*
+.lightdash-metadata.json
+*.csv
+node_modules/
+workspace/

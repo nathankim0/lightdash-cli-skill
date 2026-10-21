@@ -1,0 +1,46 @@
+chartKind: line
+config:
+  display:
+    xAxis:
+      label: Example cohort date
+    yAxis:
+      - format: percent
+        label: Example conversion rate
+  fieldConfig:
+    groupBy: []
+    x:
+      reference: cohort_date
+      type: time
+    y:
+      - aggregation: any
+        reference: conversion_rate
+  metadata:
+    version: 1
+  type: line
+contentType: sql_chart
+description: >-
+  Synthetic authoring example only. The denominator is eligible users and
+  the numerator is converted users for each example cohort. A zero denominator
+  returns NULL. Replace the SQL, definition, slug, and space with verified
+  inputs before publishing. This example does not model an observation window.
+limit: 100
+name: Example conversion rate (synthetic)
+slug: example-conversion-rate
+spaceSlug: example-space
+sql: |-
+  WITH example_counts AS (
+    SELECT CAST('2024-01-01' AS DATE) AS cohort_date,
+           100 AS eligible_users, 20 AS converted_users
+    UNION ALL
+    SELECT CAST('2024-01-02' AS DATE), 80, 12
+    UNION ALL
+    SELECT CAST('2024-01-03' AS DATE), 0, 0
+  )
+  SELECT
+    cohort_date,
+    eligible_users,
+    converted_users,
+    1.0 * converted_users / NULLIF(eligible_users, 0) AS conversion_rate
+  FROM example_counts
+  ORDER BY cohort_date
+version: 1
