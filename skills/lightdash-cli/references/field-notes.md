@@ -17,7 +17,7 @@ These are observations from CLI/server **2.616.2**, not promises about every rel
 | Investigating individual visualization types before looking for bundled references | Check `lightdash install-skills --help`, then use the official versioned reference or a freshly downloaded chart. |
 | Treating lint/upload success as the final check | Execute the SQL, inspect the saved object, and verify the rendered chart when possible. |
 
-The official skill already covers a much broader feature set. This skill keeps the common content loop short: **inspect → define → query → selected upload → read back**. It does not need a new CLI wrapper, credentials store, browser-first inventory, or a separate application.
+The official skill already covers a much broader feature set. This skill keeps the common content loop short: **inspect → define → query → scoped write → read back**. It does not need a new CLI wrapper, credentials store, browser-first inventory, or a separate application. For MCP-specific lessons and upstream comparisons, read [the ecosystem review](ecosystem-research.md).
 
 ## Primary references
 

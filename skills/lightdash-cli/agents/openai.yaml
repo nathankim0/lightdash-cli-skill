@@ -1,4 +1,4 @@
 interface:
-  display_name: "Lightdash CLI"
-  short_description: "Create and verify Lightdash charts with the CLI"
+  display_name: "Lightdash CLI & MCP"
+  short_description: "Inspect metrics and ship charts with CLI or MCP"
   default_prompt: "Use $lightdash-cli to inspect this project and complete the requested chart or dashboard change."

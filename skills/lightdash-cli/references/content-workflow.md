@@ -4,6 +4,8 @@ Examples below use shell variables chosen for the current task. Keep the inspect
 
 ## 1. Discover only what the task needs
 
+If MCP is already connected and suits the request, use [its discovery/read tools](mcp-workflow.md) instead of downloading every file. CLI remains useful for portable snapshots and reviewing YAML changes.
+
 For an edit, select the actual chart or dashboard reference:
 
 ```bash
@@ -14,7 +16,7 @@ lightdash download --project "$LD_PROJECT" --dashboards "$DASHBOARD_REF" \
   --skip-spaces --path "$SNAPSHOT_DIR"
 ```
 
-For a missing-metric search, download the accessible ordinary project content once:
+For a missing-chart search, download the accessible ordinary project content once. Also inspect [semantic metrics](semantic-layer.md) before claiming a metric does not exist:
 
 ```bash
 lightdash download --project "$LD_PROJECT" --skip-spaces --path "$SNAPSHOT_DIR"
@@ -48,7 +50,7 @@ Check meaningful invariants against actual results. For an exclusive conversion 
 
 ## 3. Author the correct chart type
 
-Prefer a downloaded example from the same instance. Use a YAML parser already available in the environment when editing structured content. Do not write a home-grown YAML parser or install packages merely to inspect a few known fields.
+Prefer a downloaded example from the same instance. Preserve unfamiliar keys, existing filter/tile UUIDs, schema version, and resource identity. A display-name change is not a slug change; use the installed version's rename workflow when renaming identity is actually requested. Use a YAML parser already available in the environment when editing structured content. Do not write a home-grown YAML parser or install packages merely to inspect a few known fields.
 
 | Kind | Content-as-code shape | Query check |
 | --- | --- | --- |
@@ -57,7 +59,7 @@ Prefer a downloaded example from the same instance. Use a YAML parser already av
 
 The second shape was verified with CLI 2.616.2. See [the synthetic SQL chart](../assets/conversion-rate.sql.yml) for a line chart. SQL chart visualization settings do **not** use the explore chart's `chartConfig` layout. Keep percentage values as fractions when using `format: percent`.
 
-Keep the checked `.sql` file and the embedded YAML SQL identical; after editing either, execute the final embedded query again. If no YAML loader is available, copy that exact scalar into the CLI argument and compare it carefully, or use an existing environment with a YAML loader. Do not treat a stale query result as validation of a later edit.
+Keep the checked `.sql` file and the embedded YAML SQL identical; after editing either, execute the final embedded query again. If no YAML loader is available, copy that exact scalar into the CLI argument and compare it carefully, or use an existing environment with a YAML loader. Do not treat a stale query result as validation of a later edit. Sort mapping keys for clean CLI round trips while retaining array order.
 
 ```bash
 lightdash lint --path "$CHART_FILE"

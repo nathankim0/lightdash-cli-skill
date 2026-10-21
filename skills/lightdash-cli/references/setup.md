@@ -2,6 +2,8 @@
 
 Use this only when the CLI, login, or selected project needs attention. A working installation does not need to be reconfigured for every task.
 
+If the user already has a suitable MCP connection, use [the MCP path](mcp-workflow.md) without requiring a CLI install. A public documentation MCP connection alone is not access to the user's Lightdash data.
+
 ```bash
 command -v lightdash
 lightdash --version
@@ -38,7 +40,7 @@ Follow [official authentication guidance](https://docs.lightdash.com/workflow/cl
 
 ## Obtain detailed references efficiently
 
-Lightdash includes `lightdash install-skills`. Inspect its help and install the official reference skill into a scratch location when you need detailed schema, model, or advanced feature documentation:
+First use server-exposed skill resources when already available through MCP. Otherwise, Lightdash includes `lightdash install-skills`; inspect its help and install the official reference skill into a scratch location when you need detailed schema, model, or advanced feature documentation:
 
 ```bash
 lightdash install-skills --help
